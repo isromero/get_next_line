@@ -28,7 +28,7 @@ char	*save_next(char	*stash)
 		free(stash);
 		return (0);
 	}
-	next = malloc(ft_strlen(stash) - i + 1);
+	next = malloc(ft_strlen2(stash) - i + 1);
 	if (!next)
 		return (0);
 	j = 0;
@@ -78,31 +78,16 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (0);
 	bytes = 1;
-	while (!ft_strchr(stash, '\n') && bytes != 0)
+	while (!ft_strchr2(stash, '\n') && bytes != 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes <= 0)
 			break ;
 		buffer[bytes] = '\0';
-		stash = ft_strjoin(stash, buffer);
+		stash = ft_strjoin2(stash, buffer);
 	}
 	free(buffer);
 	line = get_the_line(stash);
 	stash = save_next(stash);
 	return (line);
 }
-
-/*int main(void)
-{
-    int     fd;
-	int		i;
-
-	i = 0;
-    fd = open("./test1.txt", O_RDONLY);
-	while (i < 20)
-	{
-   		printf("%s", get_next_line(fd));
-		i++;
-	}
-	close(fd);
-}*/

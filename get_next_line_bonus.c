@@ -6,7 +6,7 @@
 /*   By: isromero <isromero@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:14:44 by isromero          #+#    #+#             */
-/*   Updated: 2022/11/03 13:13:54 by isromero         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:59:10 by isromero         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*save_next(char	*stash)
 		free(stash);
 		return (0);
 	}
-	next = malloc(ft_strlen(stash) - i + 1);
+	next = malloc(ft_strlen2(stash) - i + 1);
 	if (!next)
 		return (0);
 	j = 0;
@@ -69,7 +69,7 @@ char	*get_next_line(int fd)
 {
 	char		*buffer;
 	char		*line;
-	static char	*stash[OPEN_MAX];
+	static char	*stash[FOPEN_MAX];
 	int			bytes;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -78,35 +78,16 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (0);
 	bytes = 1;
-	while (!ft_strchr(stash[fd], '\n') && bytes != 0)
+	while (!ft_strchr2(stash[fd], '\n') && bytes != 0)
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes <= 0)
 			break ;
 		buffer[bytes] = '\0';
-		stash[fd] = ft_strjoin(stash[fd], buffer);
+		stash[fd] = ft_strjoin2(stash[fd], buffer);
 	}
 	free(buffer);
 	line = get_the_line(stash[fd]);
 	stash[fd] = save_next(stash[fd]);
 	return (line);
 }
-
-/*int main(void)
-{
-    int     fd;
-	int		fd1;
-	int		i;
-
-	i = 0;
-    fd = open("./test1.txt", O_RDONLY);
-	fd1 = open("./test2.txt", O_RDONLY);
-	while (i < 20)
-	{
-   		printf("este es el fd:""%s", get_next_line(fd));
-		printf("este es el fd1:""%s\n", get_next_line(fd1));
-		i++;
-	}
-	close(fd);
-	close(fd1);
-}*/
